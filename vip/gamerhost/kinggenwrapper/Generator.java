@@ -18,6 +18,7 @@ public class Generator {
 		ArrayList<String> response = Requests.getResponseBody(API_ENDPOINT + "alt?key=" + key);
 		try {
 			if (!response.isEmpty()) {
+				response.removeIf(s -> s.equals("OK"));
 				JsonObject obj = new Gson().fromJson(Util.convertToString(response), JsonObject.class);
 				if (obj.has("email") && obj.has("password")) return new Account(obj.get("email").getAsString(), obj.get("password").getAsString());
 				else throw new GeneratorException(Util.convertToString(response));
